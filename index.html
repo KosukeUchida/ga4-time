@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hello World</title>
+    <title>令和時計 - 現在時刻表示</title>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -9,12 +9,111 @@
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-MQGM9FJ9');</script>
     <!-- End Google Tag Manager -->
+
+    <style>
+        .clock-container {
+            margin: 20px;
+            line-height: 1.8;
+            max-width: 100%;
+            padding: 0 10px;
+        }
+        .clock-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .clock-line {
+            font-size: 20px;
+            margin: 5px 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .clock-label {
+            width: 70px;  /* ラベルの幅を固定 */
+        }
+        .clock-value {
+            font-weight: bold;
+        }
+        .clock-date {
+        width: 150px;  /* 日付部分の幅を固定 */
+        }
+        .clock-time {
+            width: 150px;  /* 時刻部分の幅を固定 */
+        }
+
+        /* スマートフォン向けのメディアクエリ */
+        @media screen and (max-width: 480px) {
+            .clock-container {
+                margin: 10px;
+            }
+            .clock-title {
+                font-size: 20px;
+            }
+            .clock-line {
+                font-size: 16px;
+            }
+            .clock-label {
+                width: 60px;
+            }
+            .clock-date {
+                width: auto;
+                margin-right: 10px;
+            }
+            .clock-time {
+                width: auto;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MQGM9FJ9"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    <h1>Hello World</h1>
+
+    <div class="clock-container">
+        <div class="clock-title">現在時刻</div>
+    <div class="clock-line">
+        <span class="clock-label">和暦：</span>
+        <span id="clock-reiwa-date" class="clock-value clock-date"></span>
+        <span id="clock-reiwa-time" class="clock-value clock-time"></span>
+    </div>
+    <div class="clock-line">
+        <span class="clock-label">西暦：</span>
+        <span id="clock-western-date" class="clock-value clock-date"></span>
+        <span id="clock-western-time" class="clock-value clock-time"></span>
+    </div>
+    </div>
+
+    <script>
+    function displayTime() {
+      const now = new Date();
+      const reiwaYear = now.getFullYear() - 2018;
+      const westernYear = now.getFullYear();
+      const month = now.getMonth() + 1;
+      const day = now.getDate();
+      const hour = now.getHours();
+      const minute = now.getMinutes();
+      const second = now.getSeconds();
+
+      // 和暦表示
+      const reiwaTime_date = `令和${reiwaYear}年${month}月${day}日`;
+      const reiwaTime_time = `${hour}時${minute}分${second}秒`;
+      // 西暦表示
+      const westernTime_date = `${westernYear}年${month}月${day}日`;
+      const westernTime_time = `${hour}時${minute}分${second}秒`;
+
+      document.getElementById('clock-reiwa-date').textContent = reiwaTime_date;
+      document.getElementById('clock-reiwa-time').textContent = reiwaTime_time;
+      document.getElementById('clock-western-date').textContent = westernTime_date;
+      document.getElementById('clock-western-time').textContent = westernTime_time;
+    }
+
+    window.onload = function() {
+      displayTime();
+      setInterval(displayTime, 1000);
+    };
+    </script>
 </body>
 </html>
+
