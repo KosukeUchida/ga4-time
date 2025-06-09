@@ -11,7 +11,9 @@
     <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234285f4'><path d='M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z'/><path d='M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z'/></svg>">
     
+
     <style>
         .clock-container {
             margin: 20px;
@@ -52,7 +54,7 @@
                 font-size: 26px;  /* タイトルのサイズを22pxに変更 */
             }
             .clock-line {
-                font-size: 22px;  
+                font-size: 18px;  
                 margin: 8px 0;    /* 行間を少し広げる */
             }
             .clock-label {
@@ -76,46 +78,60 @@
 
     <div class="clock-container">
         <div class="clock-title">現在時刻</div>
-    <div class="clock-line">
-        <span class="clock-label">和暦：</span>
-        <span id="clock-reiwa-date" class="clock-value clock-date"></span>
-        <span id="clock-reiwa-time" class="clock-value clock-time"></span>
-    </div>
-    <div class="clock-line">
-        <span class="clock-label">西暦：</span>
-        <span id="clock-western-date" class="clock-value clock-date"></span>
-        <span id="clock-western-time" class="clock-value clock-time"></span>
-    </div>
+        <div class="clock-line">
+            <span class="clock-label">西暦：</span>
+            <span id="clock-western-date" class="clock-value clock-date"></span>
+            <span id="clock-western-time" class="clock-value clock-time"></span>
+        </div>
+        <div class="clock-line">
+            <span class="clock-label">和暦：</span>
+            <span id="clock-reiwa-date" class="clock-value clock-date"></span>
+            <span id="clock-reiwa-time" class="clock-value clock-time"></span>
+        </div>
+        <div class="clock-line">
+            <span class="clock-label">干支：</span>
+            <span id="eto" class="clock-value"></span>
+        </div>
     </div>
 
     <script>
-    function displayTime() {
-      const now = new Date();
-      const reiwaYear = now.getFullYear() - 2018;
-      const westernYear = now.getFullYear();
-      const month = now.getMonth() + 1;
-      const day = now.getDate();
-      const hour = now.getHours();
-      const minute = now.getMinutes();
-      const second = now.getSeconds();
+        function getEto(year) {
+            const eto = ['子（ね）', '丑（うし）', '寅（とら）', '卯（う）', 
+                        '辰（たつ）', '巳（み）', '午（うま）', '未（ひつじ）', 
+                        '申（さる）', '酉（とり）', '戌（いぬ）', '亥（い）'];
+            return eto[(year - 4) % 12];
+        }
+        function displayTime() {
+            const now = new Date();
+            const reiwaYear = now.getFullYear() - 2018;
+            const westernYear = now.getFullYear();
+            const month = now.getMonth() + 1;
+            const day = now.getDate();
+            const hour = now.getHours();
+            const minute = now.getMinutes();
+            const second = now.getSeconds();
 
-      // 和暦表示
-      const reiwaTime_date = `令和${reiwaYear}年${month}月${day}日`;
-      const reiwaTime_time = `${hour}時${minute}分${second}秒`;
-      // 西暦表示
-      const westernTime_date = `${westernYear}年${month}月${day}日`;
-      const westernTime_time = `${hour}時${minute}分${second}秒`;
+            // 和暦表示
+            const reiwaTime_date = `令和${reiwaYear}年${month}月${day}日`;
+            const reiwaTime_time = `${hour}時${minute}分${second}秒`;
+            // 西暦表示
+            const westernTime_date = `${westernYear}年${month}月${day}日`;
+            const westernTime_time = `${hour}時${minute}分${second}秒`;
 
-      document.getElementById('clock-reiwa-date').textContent = reiwaTime_date;
-      document.getElementById('clock-reiwa-time').textContent = reiwaTime_time;
-      document.getElementById('clock-western-date').textContent = westernTime_date;
-      document.getElementById('clock-western-time').textContent = westernTime_time;
-    }
+            document.getElementById('clock-reiwa-date').textContent = reiwaTime_date;
+            document.getElementById('clock-reiwa-time').textContent = reiwaTime_time;
+            document.getElementById('clock-western-date').textContent = westernTime_date;
+            document.getElementById('clock-western-time').textContent = westernTime_time;
 
-    window.onload = function() {
-      displayTime();
-      setInterval(displayTime, 1000);
-    };
+            // 干支表示
+            const etoStr = getEto(westernYear);
+            document.getElementById('eto').textContent = `令和${reiwaYear}年は${etoStr}年`;
+        }
+
+        window.onload = function() {
+            displayTime();
+            setInterval(displayTime, 1000);
+        };
     </script>
 </body>
 </html>
